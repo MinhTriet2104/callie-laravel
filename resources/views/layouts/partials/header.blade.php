@@ -1,4 +1,9 @@
 <!-- HEADER -->
+@php
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+@endphp
 <header id="header">
 		<!-- NAV -->
 		<div id="nav">
@@ -47,10 +52,17 @@
 							<a href="{{ url('/') }}">Trang chủ</a>
 							<div class="dropdown">
 								<div class="dropdown-body">
-									<ul class="dropdown-list">										
-										<li><a href="about.html">About Us</a></li>
-										<li><a href="contact.html">Contacts</a></li>
-										<li><a href="blank.html">Regular</a></li>
+									<ul class="dropdown-list">
+                    @if (isset($_SESSION['user_id']))
+                    <li><a href="{{ url('/user/show/' . $_SESSION['user_id']) }}">Profile</a></li>
+                    @if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == "admin")
+                    <li><a href="{{ url('/newspaper/manage') }}">Administration</a></li>
+                    @endif
+                    <li><a href="{{ url('/user/logout') }}">Logout</a></li>
+                    @else
+                    <li><a href="{{ url('/user/login') }}">Login</a></li>
+                    <li><a href="{{ url('/user/signup') }}">Register</a></li>
+                    @endif
 									</ul>
 								</div>
 							</div>
@@ -165,9 +177,16 @@
 						</ul>
 					</li>
 					</li>
-					<li><a href="about.html">About Us</a></li>
-					<li><a href="contact.html">Contacts</a></li>
-					<li><a href="#">Advertise</a></li>
+					@if (isset($_SESSION['user_id']))
+          <li><a href="{{ url('/user/show/' . $_SESSION['user_id']) }}">Profile</a></li>
+          @if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == "admin")
+          <li><a href="{{ url('/newspaper/manage') }}">Administration</a></li>
+          @endif
+          <li><a href="{{ url('/user/logout') }}">Logout</a></li>
+          @else
+          <li><a href="{{ url('/user/login') }}">Login</a></li>
+          <li><a href="{{ url('/user/signup') }}">Register</a></li>
+          @endif
 				</ul>
 				<button class="nav-close nav-aside-close"><span></span></button>
 			</div>

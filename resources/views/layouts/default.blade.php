@@ -38,17 +38,17 @@
     <div class="col-md-8 hot-post-left">
 			<!-- post -->
 			<div class="post post-thumb">
-				<a class="post-img" href=""><img src="{{ $hotNews[0]['newspaper_imgae'] }}" alt="news-img"
+				<a class="post-img" href="{{ route('newspaper.show', ['slug' => Str::slug(strip_tags($hotNews[0]->newspaper_title)), 'id' => $hotNews[0]->id]) }}"><img src="{{ $hotNews[0]['newspaper_imgae'] }}" alt="news-img"
 						style="height: 507px;"></a>
 				<div class="post-body">
 					<div class="post-category">
-						<a href=""> {{$hotNews[0]->category['category_name']}}</a>
+						<a href="{{ route('category.show', ['id' => $hotNews[0]->category_id]) }}"> {{$hotNews[0]->category['category_name']}}</a>
 					</div>
 					<h3 class="post-title title-lg">
-						<a href="">{{ strip_tags($hotNews[0]['newspaper_title']) }}</a>
+						<a href="{{ route('newspaper.show', ['slug' => Str::slug(strip_tags($hotNews[0]->newspaper_title)), 'id' => $hotNews[0]->id]) }}">{{ strip_tags($hotNews[0]['newspaper_title']) }}</a>
 					</h3>
 					<ul class="post-meta">
-						<li><a href="author.html">{{ 'author' }}</a></li>
+						<li><a href="#">{{ $hotNews[0]->author->author_name }}</a></li>
 						@php
 						$date = new DateTime($hotNews[0]['newspaper_date']);
 						$date = $date->format('d M Y, H:i');
@@ -63,16 +63,16 @@
 			@for ($i = 1; $i < 3 ; $i++)
 			<!-- post -->
 			<div class="post post-thumb">
-				<a class="post-img" href=""><img src="{{ $hotNews[$i]['newspaper_imgae'] }}" alt="news-img"
+				<a class="post-img" href="{{ route('newspaper.show', ['slug' => Str::slug(strip_tags($hotNews[$i]->newspaper_title)), 'id' => $hotNews[$i]->id]) }}"><img src="{{ $hotNews[$i]['newspaper_imgae'] }}" alt="news-img"
 						style="height: 250px;"></a>
 				<div class="post-body">
 					<div class="post-category">
-						<a href="">{{$hotNews[$i]->category['category_name']}}</a>
+						<a href="{{ route('category.show', ['id' => $hotNews[$i]->category_id]) }}">{{$hotNews[$i]->category['category_name']}}</a>
 					</div>
 					<h3 class="post-title title-lg"><a
-							href="">{{ strip_tags($hotNews[$i]['newspaper_title']) }}</a></h3>
+							href="{{ route('newspaper.show', ['slug' => Str::slug(strip_tags($hotNews[$i]->newspaper_title)), 'id' => $hotNews[$i]->id]) }}">{{ strip_tags($hotNews[$i]['newspaper_title']) }}</a></h3>
 					<ul class="post-meta">
-						<li><a href="author.html">{{ 'author' }}</a></li>
+						<li><a href="#">{{ $hotNews[$i]->author->author_name }}</a></li>
 						@php
 						$date = new DateTime($hotNews[$i]['newspaper_date']);
 						$date = $date->format('d M Y, H:i');
@@ -91,6 +91,30 @@
 		</div>
 		<div class="col-md-4">
 			@include('layouts.partials.sidebar')
+      @if(isset($isCategory))
+      <!-- galery widget -->
+      <div class="aside-widget">
+        <div class="section-title">
+          <h2 class="title">Instagram</h2>
+        </div>
+        <div class="galery-widget">
+          <ul>
+          @for ($i = 0; $i < 6; $i++)
+            <li><a href="#"><img src="{{ $hotNews[$i]['newspaper_imgae'] }}" alt="instagram-img"></a></li>		
+          @endfor
+          </ul>
+        </div>
+      </div>
+      <!-- /galery widget -->
+
+      <!-- Ad widget -->
+      <div class="aside-widget text-center">
+        <a href="#" style="display: inline-block;margin: auto;">
+          <img class="img-responsive" src="{{ asset('img/ad-2.jpg') }}" alt="ad-img">
+        </a>
+      </div>
+      <!-- /Ad widget -->
+      @endif
 		</div>
 	</div>
 	</div>
@@ -104,6 +128,11 @@
 src="https://code.jquery.com/jquery-3.4.1.min.js"
 integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 crossorigin="anonymous"></script>
+@if (isset($home) || isset($isCategory))
 <script src="{{ asset('js/loadmore.js') }}"></script>
+@endif
+@if (isset($isPost))
+<script defer src="{{ asset('js/get-comment.js') }}"></script>
+@endif
 </body>
 </html>

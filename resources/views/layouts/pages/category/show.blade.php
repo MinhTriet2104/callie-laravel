@@ -44,4 +44,12 @@
   @endif
   @endfor
 </div>
+
+<!-- post -->
+<div id="content"></div>
+<div class="section-row loadmore text-center">
+  <input type="hidden" id="category-id" value="{{ $hotNewsByCategory[0]->category->id }}">
+  <input type="button" class="primary-button" id="load-more" value="load more">
+</div>
+<!-- /post -->
 @endsection
